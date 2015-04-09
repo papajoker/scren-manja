@@ -1,0 +1,93 @@
+#!/usr/bin/bash
+##screen detection tools
+# re-use screenFetch
+
+distro='manjaro'
+verbosity=0
+
+#use screenFetch ?
+file=$(pacman -Ql screenfetch | grep -E "bin(.*)screenfetch")
+file=${file:12}
+if [[  -r $file ]]; then
+    dest_file="${DIRS[local]}/screenfetch.sh"
+    if [ 1 != 2 ]; then
+        sed -e "s/infoDisplay$/\#infoDisplay/g" "$file" > "$dest_file"
+        sed -i -e "s/^exit 0$/\#exit 0/g" "$dest_file"
+        #delete read/exec params
+        sed -i -e "/# Begin Flags Phase/,/End Flags Phase/d" "$dest_file"
+        #not exec all detect* by default
+        sed -i -e 's/detect\$/break #detect\$/' "$dest_file"
+    fi
+    source "$dest_file"
+else
+    echo "Error: Screenfetch package not found"
+    exit 5
+fi
+ 
+    detect__wm()
+    {
+        local WM=''
+        detectwm
+        echo -n "$WM"
+    }
+    
+    detect__de()
+    {
+        local DE=''
+        detectde
+        echo -n "$DE"
+    }
+    
+    detect__theme()
+    {
+        local Win_theme=''
+        detectwmtheme
+        echo -n "$Win_theme"
+    }
+    
+    detect__gtk()
+    {
+        local gtk3Theme=''
+        local gtk2Theme=''
+        local gtkIcons=''
+        local gtkFont=''
+        detectgtk
+        echo -n "$gtk3Theme $gtkIcons"
+    }     
+
+    detect__uptime()
+    {
+        local uptime=''
+        detectuptime
+        echo -n "$uptime"
+    }
+    
+    detect__cpu()
+    {
+        local cpu=''
+        local nb=$(cat /proc/cpuinfo | grep processor | wc -l)
+        detectcpu
+        echo -n "$cpu (x$nb)"
+    }
+    
+    detect__gpu()
+    {
+        local gpu=''
+        detectgpu
+        echo -n "$gpu"
+    }
+    
+    detect__shell()
+    {
+        local myShell=''
+        detectshell
+        echo -n "$myShell"
+    }
+    
+    detect__disk()
+    {
+        local diskusage=''
+        detectdisk
+        echo -n "$diskusage"
+    }     
+

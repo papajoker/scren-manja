@@ -1,0 +1,28 @@
+#!/usr/bin/bash
+##screen infos plugins
+
+functions[ip]='IP: '
+function detect__ip()
+{
+    ip=$(ip addr show |grep -oE "inet (.*)global" | grep -oE " (.*)[/]")
+    echo -n "${ip:0:-1}"
+}
+
+functions[disksystem]='Disk /: '
+function detect__disksystem()
+{
+    infos=$(df -h / --output="used,size,avail,pcent" | tail -n 1 | awk {'print $1" on "$2" ("$4")"'})
+    echo -n "$infos"
+}
+
+functions[actu]='Actu: '
+function detect__actu()
+{
+    actu=$(curl -s http://www.manjaro.fr/blog/feed/ | grep -E -om 1 '<title>.*manjaro.*</title>')
+    actu=${actu:7:${#actu}-15}
+    actu_date=$(curl -s http://www.manjaro.fr/blog/feed/ |  grep -ioE -m 1 'pubDate>.*</pubDate' | awk -F',' '{print $2}' | awk -F' ' '{print $1" "$2" "$3}' )
+    actu_date=${actu_date:0:${#actu_date}-0} 
+    echo -n "$actu ${colors[null]}($actu_date)"
+}
+
+
