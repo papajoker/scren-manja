@@ -100,7 +100,6 @@ function detect__manjaro()
     while read line  
     do  
         key=${line//=*}
-        #echo "$line -> key:$key"
         if [[ ${line//=*} = 'DISTRIB_CODENAME' ]]; then    
             c=${line//*=}
         fi
@@ -197,7 +196,6 @@ function detect__script()
         var="${var,,}"
         ret=$(detect__"$var" 2>&1)
         if [ "$?" -ne 0 ]; then
-            #echo -n "$1():  no"
             return 128
         else
             echo -n "$1(): $ret yes script ok in plugins"
@@ -220,16 +218,15 @@ function detects()
     i=-1
     nb_blank=0
     for line in ${logo[*]}; do
-        let i+=1;   #echo "i: $i"
+        let i+=1;
         fn=${fns[$i]}; 
                                                                        
         if [ -n "$fn" ]; then
             #echo "i:$i fn:$fn"
-            #detect__verbose_out "--------i:$i fn:$fn"
             #[[ -n $(declare -f "detect__$fn") ]] || echo "Function detect__$fn not foundt"
             data="${functions[$fn]}${colors[$color]}$("detect__$fn" 2>&1)${colors[null]}"
             if [[ "$?" -ne 0 ]]; then
-                #echo "erreur $fn :$? : $data"
+                #echo "error $fn :$? : $data"
                 data=$("detect__script" "$fn" )
                 let nb_blank+=1
             else
@@ -269,7 +266,6 @@ function set_dirs()
 
 main()
 {
-    #echo "color:$color dev:$developer origin:$conf_default"
     set_dirs "$developer"
 
     # load infos function (screenFetch)
@@ -324,7 +320,7 @@ else
             o) conf_default=true ;;
 	esac
     done
-    #shift $((OPTIND-1))
+
     main "${@}"
     exit 0
 fi
