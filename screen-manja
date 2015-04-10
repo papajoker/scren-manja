@@ -71,11 +71,21 @@ declare -A functions=(
 
 function usage()
 {
-    echo -n "-c \"color\" : "
-    for i in "${!colors[*]}"; do
-        echo -n "$i "
+    echo -e "Usage: screen-manja [-o] [-c "color"]"
+    
+    echo -e "\t-o : origin ; not load user config"
+    echo -en "\t-c \"color\"\n\n ${#colors[@]} colors available:\n"
+    for i in "${!colors[@]}"; do
+        echo -ne "${colors[$i]}$i ${colors[null]}"
     done
-    echo -e "\n-o : origin ; not load user config"
+    #echo -d "\n-d : developer (local system tree)"
+    
+    echo -ne "\n\n ${#functions[@]} functions available:\n${colors[$color]}"
+    for i in "${!functions[*]}"; do
+        echo -n "$i "
+    done    
+    echo -e "${colors[null]}"
+    
     exit 0
 }
 
@@ -294,7 +304,16 @@ if [ "${BASH_SOURCE[0]}" != "$0" ]; then
     export -f search_arch
     export -f search_aur
 else
-    if [ "$1" == '-h' ]; then
+    if [ "$1" == '-h' ] || [ "$1" == '--help' ]; then
+        set_dirs
+        # load user functions
+        file="${DIRS[local]}/plugins"
+        if [[ -r "$file" ]]; then
+            source "$file"
+        else
+            file="${DIRS[lib]}/plugins"
+            [[ -r "$file" ]] && source "$file"
+        fi   
         usage
         exit 0
     fi
