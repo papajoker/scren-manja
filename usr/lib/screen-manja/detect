@@ -26,7 +26,7 @@ fi
  
     detect__wm()
     {
-        local WM=''
+        WM=''
         detectwm
         echo -n "$WM"
     }
@@ -42,6 +42,7 @@ fi
     {
         local Win_theme=''
         detectwmtheme
+        [ "$Win_theme" == "Not Found" ] && return 1 #Win_theme=''
         echo -n "$Win_theme"
     }
     
