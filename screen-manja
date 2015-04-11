@@ -166,7 +166,11 @@ function detect__ip()
 
 function detect__packages()
 {
-    echo -n "$(pacman -Qq | wc -l) ${colors[null]}($(detect__maj)) ($(detect__orphan))"
+	local or=$(detect__orphan)
+	[[ "$or" -gt 0 ]] && or="(-$or)"
+	local upd=$(detect__maj)
+	[[ "$upd" -gt 0 ]] && upd="(+$upd)"
+    echo -n "$(pacman -Qq | wc -l) ${colors[null]}$upd $or"
 }
 
 function detect__maj()
