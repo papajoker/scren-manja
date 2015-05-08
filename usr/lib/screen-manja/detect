@@ -35,6 +35,7 @@ fi
     {
         local DE=''
         detectde
+        [ "$DE" == "Not Present" ] && return 1 
         echo -n "$DE"
     }
     
@@ -42,7 +43,7 @@ fi
     {
         local Win_theme=''
         detectwmtheme
-        [ "$Win_theme" == "Not Found" ] && return 1 #Win_theme=''
+        [ "$Win_theme" == "Not Found" ] && return 1
         echo -n "$Win_theme"
     }
     
@@ -75,6 +76,7 @@ fi
     {
         local gpu=''
         detectgpu
+        [ "$gpu" == "Not Found" ] && return 1
         echo -n "$gpu"
     }
     
