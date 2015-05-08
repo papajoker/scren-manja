@@ -210,17 +210,12 @@ function detect__script()
 screen_out=''
 function detects()
 {
-    declare -A fns
-    local i=0
-    for s in ${@}; do
-        fns[$i]="$s"
-        let i+=1;
-    done
-
-    OLD_IFS="$IFS"
+    local i=-1
+    local fns=( ${@} )
+    local fn line
+    local nb_blank=0
+    local OLD_IFS="$IFS"
     IFS="\n"
-    i=-1
-    nb_blank=0
     for line in ${logo[*]}; do
         let i+=1;
         fn=${fns[$i]}; 
@@ -275,7 +270,7 @@ main()
     # load infos function (screenFetch)
     file="${DIRS[lib]}/detect"
     [[ -r "$file" ]] && source "$file"
-    [[ -r "$file" ]] || echo "$file non trouvé"
+    [[ -r "$file" ]] || echo "$file not found"
 
     # load user functions
     file="${DIRS[local]}/plugins"
@@ -325,6 +320,6 @@ else
 	esac
     done
 
-    main "${@}"
+    main "$@"
     exit 0
 fi
