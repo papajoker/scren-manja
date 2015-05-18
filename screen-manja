@@ -215,7 +215,7 @@ function detects()
     local fn line
     local nb_blank=0
     local OLD_IFS="$IFS"
-    IFS="\n"
+    IFS=$'\n'
     for line in ${logo[*]}; do
         let i+=1;
         fn=${fns[$i]}; 

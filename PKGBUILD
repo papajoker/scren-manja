@@ -1,7 +1,7 @@
 # Maintainer: Papajoker <papajoker [at] archlinux [dot] info>
 pkgname=screen-manja
-pkgver=0.1.0
-pkgrel=3
+pkgver=0.1.1
+pkgrel=0
 pkgdesc="Fetches system/theme information in terminal for Linux Manjaro"
 arch=('any')
 url="https://github.com/papajoker/scren-manja"
